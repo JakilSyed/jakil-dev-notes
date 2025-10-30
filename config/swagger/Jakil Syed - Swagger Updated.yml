@@ -1,0 +1,308 @@
+openapi: 3.0.4
+info:
+  version: '1.0'
+  title: Open API Specification for Customer and Account Management
+  description: OpenAPI documentation for managing customers and accounts in the telecom domain
+  termsOfService: https://netcracker.com/tos
+  contact:
+    name: Netcracker Customer Care
+    email: 'netcracker@customersupport.com'
+    url: 'https://www.netcracker.com'
+externalDocs:
+  url: https://www.cms.info.com
+  description: Additional documentation
+
+servers:
+  - url: https://localhost:8080/api/v1
+    description: Production Server (uses live data)
+  - url: https://localhost:8443/api/v1
+    description: Test Server (uses test data)
+
+tags:
+  - name: customer
+    description: Everything about customers
+    externalDocs:
+      url: http://docs.my-api.com/customer.html
+  - name: account
+    description: Everything about accounts
+    externalDocs:
+      url: http://docs.my-api.com/account.html
+
+paths:
+  /customers:
+    get:
+      tags:
+        - customer
+      summary: Get all the customers
+      operationId: getCustomers
+      parameters:
+        - name: sortBy
+          in: query
+          description: Sort order of customer
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+        - customer
+      summary: Add a new customer
+      operationId: addCustomer
+      requestBody:
+        description: Customer to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '4XX':
+          description: Bad Request
+        '5XX':
+          description: Server Error
+
+  /customers/{id}:
+    get:
+      tags:
+        - customer
+      summary: Get customer by ID
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    put:
+      tags:
+        - customer
+      summary: Update customer by ID
+      operationId: updateCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Updated customer data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer updated successfully
+    patch:
+      tags:
+        - customer
+      summary: Partially update (patch) customer by ID
+      operationId: patchCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Patch the customer data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer partially updated successfully
+    delete:
+      tags:
+        - customer
+      summary: Delete customer by ID
+      operationId: deleteCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Customer deleted successfully
+
+  /accounts:
+    get:
+      tags:
+        - account
+      summary: Get all accounts
+      operationId: getAccounts
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+        - account
+      summary: Add a new account
+      operationId: addAccount
+      requestBody:
+        description: Account to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: Account added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+
+  /accounts/{id}:
+    get:
+      tags:
+        - account
+      summary: Get account by ID
+      operationId: getAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    put:
+      tags:
+        - account
+      summary: Update account by ID
+      operationId: updateAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Updated account
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account updated successfully
+    patch:
+      tags:
+        - account
+      summary: Patch account by ID
+      operationId: patchAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Partial update / Patch the account data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account patched successfully
+    delete:
+      tags:
+        - account
+      summary: Delete account by ID
+      operationId: deleteAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Account deleted successfully
+
+components:
+  schemas:
+    Customer:
+      type: object
+      description: Represent customer entry
+      properties:
+        customerId:
+          type: number
+          description: Customer ID
+        customerName:
+          type: string
+          description: Customer name
+        customerType:
+          type: string
+          enum:
+            - Business
+            - Residential
+          description: Type of the customer
+        customerAddress:
+          type: string
+          description: Customer address
+    Account:
+      type: object
+      description: Represent account entry
+      properties:
+        accountId:
+          type: number
+          description: Account ID
+        accountType:
+          type: string
+          description: Type of the account
+        accountStatus:
+          type: string
+          enum:
+            - Active
+            - Inactive
+            - Suspended
+          description: Account status
+        customerId:
+          type: number
+          description: Associated customer ID

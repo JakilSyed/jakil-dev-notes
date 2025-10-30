@@ -1,0 +1,35 @@
+1. What are the non-functional requirements (NFRs) in Microservices?
+Scalability (Horizontal scaling)
+Availability & Resilience (circuit breakers)
+Performance (kafka / gRPC)
+Security (TLS, gateways for service-to-service, Oauth2,jwt,m2m for auth)
+Monitoring and Observability (prometheus,graphana, elak stack for monitoring, zipkin for trace requests)
+Fault Tolerance (patterns like bulkheads, timeouts, retries)
+Maintainability ( clear API contracts and versioning help maintain stability)
+Deployability (CICD)
+Data Consistency (SAGA, Event sourcing)
+Compliance and Auditing (services should support logging for audit trails and meet compliance requirements like GDPR,HIPPA,etc)
+
+2.I have an API currently used by one client. Now, more clients are coming in with extra parameters — how do I handle them without modifying the existing API contract?
+Use the optional request fields + optionally a header to differentiate clients, and implement graceful branching inside the controller.
+
+3. How do you improve the performance of a database query?
+Analyze the Query: Use tools like EXPLAIN, EXPLAIN ANALYZE, or a query planner to understand how the database is executing the query.
+Add Indexes (Carefully): Add indexes on columns used in WHERE, JOIN, ORDER BY, or GROUP BY.
+Rewrite the Query: Avoid SELECT * &
+Use Pagination
+Denormalization or Caching (views, in-memory caching (redis))
+Avoid N+1 Queries (use JOIN FETCH or .include())
+Partitioning & Archiving
+Use Proper Data Types (don’t store numeric values as strings)
+Monitor & Profile Regularly (Use query monitoring tools (e.g., pg_stat_statements, MySQL slow query log).)
+How do you ensure durability in Kafka?
+acks = ALL
+
+4. When to go for kafka, when to go for REST?
+
+Kafka:  real-time, decoupled, scalable event processing
+REST : request-response.
+In practice, I’ve used REST for things like user authentication, search, or CRUD services.
+But for things like order events, payment updates, and analytics pipelines, I’ve used Kafka to achieve real-time processing, decoupling, and reliability.
+In some architectures, I’ve even used both — REST for commands, and Kafka for events.

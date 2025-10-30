@@ -1,0 +1,77 @@
+Java 21
+
+Telusco Video
+
+1. Changes in Switch condition
+-- Break statement can be removed now.
+-- To do so we need to use -> instead of : after case. With this there is no need of break.
+-- Switch expression is introduced.
+we can assign value returned from switch cases. like below
+
+//Java 14
+        String day = "mon";
+        String time = "";
+        time = switch (day) {
+            case "sat", "sun" -> "7am";
+            case "mon" -> "8am";
+            default -> "6am";
+        };
+
+        System.out.println("time for days is" + time);
+			
+-- If we dont want to use arror ("->") after case and want to stick to old ":" syntax then we need to use yeild keyword to return the data.
+below is the example with yield
+String day = "mon";
+String time = "";
+time = switch(day) {
+			case "sat" , "sun" : yield "7am";
+			case "mon" : yield "8am";
+			default : yield "6am";
+			};
+			
+			
+2. Local variable type -> "var" 
+-- Introduced in Java10.
+-- Must be initialized
+
+3. Triple quote String to write multi line string.
+//Java 15 feature
+
+String name = """
+Jakil
+Syed
+""";
+
+4. String Template. 
+//Java 21 feature
+-- STR is introduced
+
+
+5. Sealed Classes
+-- if we write final then no other class can extend that class.
+-- With "sealed class Vehicle permits Car, Bike" the allows mentioned class for extending
+
+sealed class Vehicle permits Car, Bike {
+	public void go() {
+	}
+}
+
+
+6. record classes
+-- it will reduce number of lines in code. All methods like getters, equals, hashcode, parameterized constructor are included
+-- all variables are private final
+-- Setter are not included. Hence record class is immutable classes. its used only in Data transfer use cases
+-- record class cannot extend another class as it already extends record class internally. But we can implement interfaces
+-- record Vehicle (int id, String name) {}
+
+
+
+In28 Minutes
+Java New Features - Java 9, Java 10, Java 11, Java 12, Java13, Java 14, Java 15
+https://www.youtube.com/watch?v=8hA47LxykPo
+
+
+
+
+Record classes
+https://www.youtube.com/watch?v=pmVgs8wOk5o
